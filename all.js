@@ -7,7 +7,9 @@ const app = Vue.createApp({
     methods:{
         loading(){
             const loader = this.$loading.show();
-            setTimeout
+            setTimeout(()=>{
+                loader.hide();
+            },1500)
         }
     },
     mounted(){
