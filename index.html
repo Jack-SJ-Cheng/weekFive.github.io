@@ -84,15 +84,23 @@
                     </tr>
                 </tfoot>
             </table>
-            <label for="email"></label>
-            <input type="email" name="email" id="email">
-            <label for="name"></label>
-            <input type="text" name="name" id="name">
-            <label for="tel"></label>
-            <input type="tel" name="tel" id="tel">
-            <label for="address"></label>d
-            <input type="text" name="" id="">
-            <button class="btn btn-danger" type="button" @click="loading">{{test}}</button>
+            <form action="">
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <label for="email">E-mail</label>
+                        <input class="form-control mb-2" type="email" name="email" id="email">
+                        <label for="name">姓名</label>
+                        <input class="form-control mb-2" type="text" name="name" id="name">
+                        <label for="tel">聯絡電話</label>
+                        <input class="form-control mb-2" type="tel" name="tel" id="tel">
+                        <label for="address">收件地址</label>
+                        <input class="form-control mb-2" type="text" name="" id="address">
+                        <button class="btn btn-danger" type="button" @click="loading">{{test}}</button>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
     </div>
 
