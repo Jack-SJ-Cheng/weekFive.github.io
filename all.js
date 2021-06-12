@@ -1,7 +1,15 @@
+import pagination from './pagination.js';
+
 const app = Vue.createApp({
+    components: {
+        pagination
+    },
     data(){
         return{
-            test: 555
+            url: 'https://vue3-course-api.hexschool.io',
+            apiPath: 'randomno',
+            products: [],
+            purchase: []
         }
     },
     methods:{
@@ -10,6 +18,20 @@ const app = Vue.createApp({
             setTimeout(()=>{
                 loader.hide();
             },1500)
+        },
+        getData(page = 1){
+            axios.get(`${this.url}/api/${this.apiPath}/products?page=${page}`)
+            .then(res=>{
+                if(res.data.success){
+                    const {products} = res.data;
+                    console.log(products);
+                    products.forEach(item=>{
+                        this.products.push(item)
+                    })
+                    console.log(this.products);
+                }
+            })
+            .catch(err=>console.log(err))
         }
     },
     mounted(){

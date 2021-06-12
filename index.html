@@ -55,9 +55,28 @@
                             </div>
                         </td>
                     </tr>
+                    <tr v-for="item in products">
+                        <td class="text-center">
+                            <img width="120"
+                                :src="item.imageUrl"
+                                alt="">
+                        </td>
+                        <td>{{item.title}}</td>
+                        <td>
+                            <del class="h6">原價{{item.origin_price}}</del>
+                            <p class="h5">特價{{item.price}}</p>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group  btn-group-sm" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-success">查看更多</button>
+                                <button type="button" class="btn btn-outline-danger">加入購物車</button>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <button class="btn btn-outline-danger" type="button">清空購物車</button>
+            <pagination></pagination><br>
+            <button @click="getData" class="btn btn-outline-danger" type="button">清空購物車</button>
             <table class="table align-middle">
                 <thead>
                     <tr>
@@ -89,18 +108,19 @@
                     <div class="col-6">
                         <label for="email">E-mail</label>
                         <input class="form-control mb-2" type="email" name="email" id="email">
-                        <label for="name">姓名</label>
+                        <label for="name">收件人姓名</label>
                         <input class="form-control mb-2" type="text" name="name" id="name">
                         <label for="tel">聯絡電話</label>
                         <input class="form-control mb-2" type="tel" name="tel" id="tel">
                         <label for="address">收件地址</label>
                         <input class="form-control mb-2" type="text" name="" id="address">
-                        <button class="btn btn-danger" type="button" @click="loading">{{test}}</button>
+                        <div class="text-end">
+                            <button class="btn btn-danger" type="button" @click="getData">送出訂單</button>
+                        </div>
+                        
                     </div>
                 </div>
-
             </form>
-
         </div>
     </div>
 
