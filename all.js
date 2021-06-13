@@ -34,12 +34,6 @@ const app = Vue.createApp({
         openModal() {
             this.$refs.productModal.openModal();
         },
-        loading() {
-            const loader = this.$loading.show();
-            setTimeout(() => {
-                loader.hide();
-            }, 1500)
-        },
         getData(page = 1) {
             axios.get(`${url}/api/${apiPath}/products?page=${page}`)
                 .then(res => {
@@ -82,5 +76,5 @@ const app = Vue.createApp({
 app.component('VForm', VeeValidate.Form);
 app.component('VField', VeeValidate.Field);
 app.component('ErrorMessage', VeeValidate.ErrorMessage);
-app.use(VueLoading);
+
 app.mount('#app');
