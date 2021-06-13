@@ -18,48 +18,29 @@
         <div class="container">
             <ul class="nav justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">產品列表</a>
+                    <a class="nav-link" aria-current="page" href="#">產品列表</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">購物車列表</a>
+                    <a class="nav-link" href="#cart">購物車列表</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">購買人資訊</a>
+                    <a class="nav-link" href="#buyerInfo">購買人資訊</a>
                 </li>
             </ul>
             <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th width="120" class="text-center">圖片</th>
+                        <th class="text-center">圖片</th>
                         <th>商品名稱</th>
                         <th width="150">價格</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="text-center">
-                            <img width="120"
-                                src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y2FyfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
-                                alt="">
-                        </td>
-                        <td>跑車</td>
-                        <td>
-                            <del class="h6">原價2000000</del>
-                            <p class="h5">特價1500000</p>
-                        </td>
-                        <td class="text-end">
-                            <div class="btn-group  btn-group-sm" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-success">查看更多</button>
-                                <button type="button" class="btn btn-outline-danger">加入購物車</button>
-                            </div>
-                        </td>
-                    </tr>
                     <tr v-for="item in products">
                         <td class="text-center">
-                            <img width="120"
-                                :src="item.imageUrl"
-                                alt="">
+                            <div style="height: 120px; background-size: cover; background-position: center"
+                                :style="{backgroundImage: `url(${item.imageUrl})`}"></div>
                         </td>
                         <td>{{item.title}}</td>
                         <td>
@@ -68,29 +49,45 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group  btn-group-sm" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-success">查看更多</button>
-                                <button type="button" class="btn btn-outline-danger">加入購物車</button>
+                                <button @click="getInfo(item.id)" type="button"
+                                    class="btn btn-outline-success">查看更多</button>
+                                <button type="button" class="btn btn-outline-danger"
+                                    @click="addCart(item.id, 1)">加入購物車</button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+
+                        </td>
+                    </tr>
+
+                </tfoot>
+
             </table>
-            <pagination></pagination><br>
-            <button @click="getData" class="btn btn-outline-danger" type="button">清空購物車</button>
-            <table class="table align-middle">
+            <pagination :page='pagination' @get-data="getData"></pagination><br>
+            <product-modal ref='productModal' :info="productInfo" @add-cart="addCart"></product-modal>
+            <table class="table align-middle" id="cart">
+                <button @click="openModal" class="btn btn-outline-danger" type="button">清空購物車</button>
                 <thead>
                     <tr>
+                        <th width="60">分類</th>
                         <th>品名</th>
-                        <th>單價</th>
+                        <th class="text-center">單價</th>
                         <th width="50" class="text-center">數量</th>
+                        <th class="text-center">總價</th>
                         <th class="text-end">刪除</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>跑車</td>
-                        <td>1500000</td>
+                    <tr v-for="item in purchase" :key="item">
+                        <td><span class="badge bg-secondary">{{item.product.category}}</span></td>
+                        <td>{{item.product.title}}</td>
+                        <td class="text-center">{{item.product.price}}</td>
                         <td class="text-center">1</td>
+                        <td class="text-center">{{item.final_total}}</td>
                         <td class="text-end">
                             <button class="btn text-danger"><i class="fas fa-times"></i></button>
                         </td>
@@ -98,12 +95,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-end" colspan="3">總計</td>
+                        <td class="text-end" colspan="5">總計</td>
                         <td class="text-center">1500000</td>
                     </tr>
                 </tfoot>
             </table>
-            <form action="">
+            <form action="" id="buyerInfo">
                 <div class="row justify-content-center">
                     <div class="col-6">
                         <label for="email">E-mail</label>
@@ -117,13 +114,18 @@
                         <div class="text-end">
                             <button class="btn btn-danger" type="button" @click="getData">送出訂單</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </form>
+            <v-form v-slot="{ errors }" @submit="onSubmit">
+                <v-field id="email" name="email" type="email" class="form-control"
+                    :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"
+                    v-model="user.email"></v-field>
+                <error-message name="email" class="invalid-feedback"></error-message>
+            </v-form>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
         crossorigin="anonymous"></script>
@@ -131,6 +133,9 @@
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4"></script>
     <script src="https://unpkg.com/vee-validate@next"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
     <script src="all.js" type="module"></script>
 </body>
 
