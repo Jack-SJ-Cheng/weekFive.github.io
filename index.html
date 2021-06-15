@@ -30,7 +30,7 @@
             <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th class="text-center">圖片</th>
+                        <th width="150" class="text-center">圖片</th>
                         <th>商品名稱</th>
                         <th width="150">價格</th>
                         <th></th>
@@ -100,31 +100,50 @@
                     </tr>
                 </tfoot>
             </table>
-            <form action="" id="buyerInfo">
-                <div class="row justify-content-center">
-                    <div class="col-6">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <v-form v-slot="{ errors }" @submit="onSubmit">
                         <label for="email">E-mail</label>
-                        <input class="form-control mb-2" type="email" name="email" id="email">
-                        <label for="name">收件人姓名</label>
-                        <input class="form-control mb-2" type="text" name="name" id="name">
-                        <label for="tel">聯絡電話</label>
-                        <input class="form-control mb-2" type="tel" name="tel" id="tel">
-                        <label for="address">收件地址</label>
-                        <input class="form-control mb-2" type="text" name="" id="address">
+                        <v-field id="email" name="email" type="email" class="form-control"
+                            :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"
+                            v-model="user.email"></v-field>
+                        <error-message name="email" class="invalid-feedback"></error-message>
+                        <label for="name" class="mt-3">收件人姓名</label>
+                        <v-field id="name" name="收件人姓名" type="text" class="form-control"
+                            :class="{ 'is-invalid': errors['收件人姓名'] }" placeholder="請輸入 收件人姓名" rules="required"
+                            v-model="user.name"></v-field>
+                        <error-message name="收件人姓名" class="invalid-feedback"></error-message>
+                        <label for="phone" class="mt-3">收件人電話</label>
+                        <v-field id="phone" name="收件人電話" type="text" class="form-control"
+                            :class="{ 'is-invalid': errors['收件人電話'] }" placeholder="請輸入 收件人電話"
+                            rules="required|min:8|max:10" v-model="user.tel"></v-field>
+                        <error-message name="收件人電話" class="invalid-feedback"></error-message>
+                        <label for="address" class="mt-3">收件地址</label>
+                        <v-field id="address" name="收件地址" type="text" class="form-control"
+                            :class="{ 'is-invalid': errors['收件地址'] }" placeholder="請輸入 收件地址" rules="required"
+                            v-model="user.address"></v-field>
+                        <error-message name="收件地址" class="invalid-feedback"></error-message>
+                        <label for="pay" class="mt-3">付款方式</label>
+                        <v-field id="pay" name="地區" class="form-control" :class="{ 'is-invalid': errors['付款方式'] }"
+                            placeholder="請選擇付款方式" rules="required" v-model="user.pay" as="select">
+                            <option value="">請選擇付款方式</option>
+                            <option value="貨到付款">貨到付款</option>
+                            <option value="超商取貨">超商取貨</option>
+                            <option value="轉帳付款">轉帳付款</option>
+                        </v-field>
+                        <label for="message" class="mt-3">付款方式</label>
+                        <v-field id="message" name="留言" type="text" class="form-control"
+                            :class="{ 'is-invalid': errors['留言'] }" placeholder="請留下給店長的話" rules=""
+                            v-model="message"></v-field>
                         <div class="text-end">
-                            <button class="btn btn-danger" type="button" @click="getData">送出訂單</button>
+                            <button class="btn btn-danger mt-3" type="button" @click.prevent="sendOrder">送出訂單</button>
                         </div>
-
-                    </div>
+                    </v-form>
                 </div>
-            </form>
-            <v-form v-slot="{ errors }" @submit="onSubmit">
-                <v-field id="email" name="email" type="email" class="form-control"
-                    :class="{ 'is-invalid': errors['email'] }" placeholder="請輸入 Email" rules="email|required"
-                    v-model="user.email"></v-field>
-                <error-message name="email" class="invalid-feedback"></error-message>
-            </v-form>
+            </div>
+
         </div>
+        <div class="mt-5" style="height: 30px; background-color: lightgray;"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"

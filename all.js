@@ -24,10 +24,17 @@ const app = Vue.createApp({
     },
     data() {
         return {
+            user: {
+                email: '',
+                name: '',
+                tel: '',
+                address: ''
+            },
             productInfo: [],
             products: [],
             purchase: [],
-            pagination
+            pagination,
+            message: ''
         }
     },
     methods: {
@@ -67,6 +74,27 @@ const app = Vue.createApp({
                 })
                 .catch(err => { console.log(err) })
         },
+        sendOrder() {
+            const data = {
+                "data": {
+                    "user": this.user,
+                    "message": this.message
+                }
+            }
+            axios.post(`${url}/api/${apiPath}/order`, data)
+                .then(res => {
+                    console.log(res);
+                    this.updateCart();
+                    this.user = {
+                        email: '',
+                        name: '',
+                        tel: '',
+                        address: ''
+                    };
+                    this.message = "";
+                })
+                .catch(err => console.log(err))
+        }
     },
     mounted() {
         this.getData();
