@@ -92,6 +92,7 @@ const app = Vue.createApp({
                         address: ''
                     };
                     this.message = "";
+                    alert('訂單已送出');
                 })
                 .catch(err => console.log(err))
         }

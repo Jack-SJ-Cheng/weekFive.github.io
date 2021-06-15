@@ -35,7 +35,7 @@ export default {
                         <div class="text-end px-5">
                             <label for="">數量:</label>
                             <input type="number" min="1" max="10" v-model.number="qty">
-                            <button @click="$emit('addCart', info.id, qty)" type="button"
+                            <button data-bs-dismiss="modal" @click="$emit('addCart', info.id, qty)" type="button"
                                 class="mx-3 btn btn-danger">加入購物車</button>
                         </div>
                     </div>
